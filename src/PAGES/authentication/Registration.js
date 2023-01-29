@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useTitle from "../../HOOKS/useTitle/useTitle";
 const Registration = () => {
@@ -14,15 +15,30 @@ const Registration = () => {
   const [signUpError, setSignUpError] = useState("");
 
   // Redirect user where they want to go
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleRegistration = (data) => {
-    const { name, email, password } = data;
+    // const { name, email, password } = data;
     setSignUpError("");
-    console.log(data);
-    // navigate(from, { replace: true });
+    // console.log(data);
+    //Add user to the server
+    fetch(`${process.env.REACT_APP_api_url}/registration`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        if (result.success) {
+          navigate(from, { replace: true });
+          toast.success(result.message);
+        }
+      });
   };
   return (
     <div className="flex items-center justify-center h-[800px] mx-5 my-12">
