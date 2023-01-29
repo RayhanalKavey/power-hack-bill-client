@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { HiOutlineUserCircle } from "react-icons/hi";
+import { useBill } from "../../../CONTEXT/BillProvider/BillProvider";
 
 const Navbar = () => {
+  const { setClsModal } = useBill();
   return (
     <section className="navbar bg-primary">
       <div className="flex-1">
@@ -19,7 +21,11 @@ const Navbar = () => {
           />
         </div>
 
-        <label htmlFor="add-new-bill" className="btn btn-accent">
+        <label
+          htmlFor="add-new-bill"
+          className="btn btn-accent"
+          onClick={() => setClsModal(true)}
+        >
           Add New Bill
         </label>
         <div className="dropdown dropdown-end">

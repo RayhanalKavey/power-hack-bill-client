@@ -11,7 +11,7 @@ const ErrorPage = () => {
       <Navbar></Navbar>
       <section className="flex justify-items-center vh-100 p-5 text-primary">
         <div className="container flex flex-col items-center justify-items-center px-5 text-center my-8">
-          <img className="w-96" src={""} alt="error page" />
+          {/* <img className="w-96" src={""} alt="error page" /> */}
           <div className="max-w-md  text-center">
             <h2 className=" text-2xl">
               Error : <span className="text-error  font-bold">{status}</span>

@@ -4,6 +4,7 @@ import BillProvider from "./CONTEXT/BillProvider/BillProvider";
 import router from "./ROUTES/Routes/Routes";
 // React query
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Toaster } from "react-hot-toast";
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BillProvider>
           <RouterProvider router={router}></RouterProvider>
+          <Toaster></Toaster>
         </BillProvider>
       </QueryClientProvider>
     </div>

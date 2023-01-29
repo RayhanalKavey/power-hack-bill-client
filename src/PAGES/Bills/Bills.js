@@ -1,12 +1,36 @@
 import { format } from "date-fns";
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import AddNewBillModal from "../../COMPONENTS/AddNewBillModal/AddNewBillModal";
+import ConfirmationModal from "../../COMPONENTS/ConfirmationModal/ConfirmationModal";
 import { useBill } from "../../CONTEXT/BillProvider/BillProvider";
 import useTitle from "../../HOOKS/useTitle/useTitle";
 
 const Bills = () => {
   useTitle("Billing List");
-  const { bills, isLoading } = useBill();
+  const { bills, isLoading, refetch, clsModal } = useBill();
+
+  //Generic modal
+  const [billModal, setBillModal] = useState(null);
+
+  const closeModal = () => {
+    setBillModal(null);
+  };
+
+  // delete bills --4
+  const handleDeleteBill = (bill) => {
+    fetch(`${process.env.REACT_APP_api_url}/delete-billing/${bill?._id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success > 0) {
+          toast.success(`Bill deleted successfully.`);
+          refetch();
+        }
+      });
+  };
 
   return (
     <>
@@ -23,20 +47,26 @@ const Bills = () => {
         </thead>
         <tbody>
           {bills
-            ?.sort((x, y) => y.currentDate?.localeCompare(x.currentDate))
+            ?.sort((x, y) => y?.currentDate - x?.currentDate)
             .map((bill) => (
               <tr key={bill?._id}>
                 <td>{bill?._id}</td>
                 {/* <td>{bill?.randomId}</td> */}
 
-                <td>{bill.fullName}</td>
-                <td> {bill.email}</td>
-                <td> {bill.phone}</td>
-                <td> {bill.payableAmount}</td>
+                <td>{bill?.name}</td>
+                <td> {bill?.email}</td>
+                <td> {bill?.phone}</td>
+                <td> {bill?.paid}</td>
                 <td>
                   {" "}
                   <button className="btn btn-xs btn-accent">Edit</button>{" "}
-                  <button className="btn btn-xs btn-error">Delete</button>
+                  <label
+                    className="btn btn-xs btn-error"
+                    htmlFor="confirmation-modal"
+                    onClick={() => setBillModal(bill)}
+                  >
+                    Delete
+                  </label>
                 </td>
               </tr>
             ))}
@@ -61,7 +91,17 @@ const Bills = () => {
           <button className="btn btn-sm">4</button>
         </div>
       </div>
-      <AddNewBillModal />
+      {clsModal && <AddNewBillModal />}
+      {billModal && (
+        <ConfirmationModal
+          title={`Are you sure you want to delete?`}
+          message={`Deleting of bill cannot be undone.`}
+          closeModal={closeModal}
+          successButtonName="Delete"
+          successAction={handleDeleteBill}
+          modalData={billModal}
+        ></ConfirmationModal>
+      )}
     </>
   );
 };

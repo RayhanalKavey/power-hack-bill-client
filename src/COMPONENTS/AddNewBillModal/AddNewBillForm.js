@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useBill } from "../../CONTEXT/BillProvider/BillProvider";
 
 const AddNewBillForm = () => {
+  const { refetch, setClsModal } = useBill();
+
   // React hook form user form and error
   const {
     register,
@@ -19,11 +23,29 @@ const AddNewBillForm = () => {
   const handleAddBill = (data) => {
     const { paid, name, email, phone } = data;
     const currentDate = Date.now();
-    const randomId = Math.floor(Math.random() * 100);
+    const randomId = Math.floor(Math.random() * 100000000000);
     const finalBill = { paid, name, email, phone, currentDate, randomId };
     setSignUpError("");
     console.log(finalBill);
     // navigate(from, { replace: true });
+    // /// --2 save product information to the database
+    fetch(`${process.env.REACT_APP_api_url}/add-billing`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(finalBill),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        setClsModal(false);
+        refetch();
+        toast.success(`Bill is added successfully.`);
+        // //Navigate user to the desired path
+        navigate("/bills");
+      });
+    //-----
   };
   return (
     <>
@@ -73,7 +95,7 @@ const AddNewBillForm = () => {
               <span className="label-text">Phone No.</span>
             </label>
             <input
-              type="password"
+              type="tel"
               {...register("phone", {
                 required: "Phone number is required!",
                 minLength: {
@@ -93,7 +115,7 @@ const AddNewBillForm = () => {
               <span className="label-text">Paid Amount</span>
             </label>
             <input
-              type="password"
+              type="number"
               {...register("paid", {
                 required: "Paid amount is required!",
               })}
