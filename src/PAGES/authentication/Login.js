@@ -74,7 +74,7 @@ const Login = () => {
           <input
             className="btn btn-primary w-full mt-5 mb-1"
             type="submit"
-            value="Sign Up"
+            value="Submit"
           />
           {signUpError && (
             <label className="label">

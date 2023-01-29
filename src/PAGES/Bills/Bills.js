@@ -7,13 +7,10 @@ import useTitle from "../../HOOKS/useTitle/useTitle";
 const Bills = () => {
   useTitle("Billing List");
   const { bills, isLoading } = useBill();
-  // console.log(bills);
-  const currentDate = format(new Date(2014, 1, 11), "MM/dd/yyyy");
-  // console.log(currentDate);
 
   return (
     <>
-      <table className="table  w-[95%] mx-auto mt-10 custom_shadow rounded-lg ">
+      <table className="table table-compact  w-[95%] mx-auto mt-10 custom_shadow rounded-lg ">
         <thead className="">
           <tr>
             <th>Billing ID</th>
@@ -30,6 +27,8 @@ const Bills = () => {
             .map((bill) => (
               <tr key={bill?._id}>
                 <td>{bill?._id}</td>
+                {/* <td>{bill?.randomId}</td> */}
+
                 <td>{bill.fullName}</td>
                 <td> {bill.email}</td>
                 <td> {bill.phone}</td>
@@ -54,6 +53,14 @@ const Bills = () => {
           </tr>
         </tfoot> */}
       </table>
+      <div className="flex justify-center my-4">
+        <div className="btn-group ">
+          <button className="btn btn-sm">1</button>
+          <button className="btn btn-sm btn-active">2</button>
+          <button className="btn btn-sm">3</button>
+          <button className="btn btn-sm">4</button>
+        </div>
+      </div>
       <AddNewBillModal />
     </>
   );
