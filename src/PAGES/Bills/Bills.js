@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import React from "react";
+import AddNewBillModal from "../../COMPONENTS/AddNewBillModal/AddNewBillModal";
 import { useBill } from "../../CONTEXT/BillProvider/BillProvider";
 import useTitle from "../../HOOKS/useTitle/useTitle";
 
@@ -11,9 +12,9 @@ const Bills = () => {
   // console.log(currentDate);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table table-compact w-full">
-        <thead>
+    <>
+      <table className="table  w-[95%] mx-auto mt-10 custom_shadow rounded-lg ">
+        <thead className="">
           <tr>
             <th>Billing ID</th>
             <th>Full Name</th>
@@ -53,7 +54,8 @@ const Bills = () => {
           </tr>
         </tfoot> */}
       </table>
-    </div>
+      <AddNewBillModal />
+    </>
   );
 };
 

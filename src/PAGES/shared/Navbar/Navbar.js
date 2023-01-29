@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { HiOutlineUserCircle } from "react-icons/hi";
 
 const Navbar = () => {
   return (
-    <section className="navbar bg-base-100">
+    <section className="navbar bg-primary">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost normal-case text-xl">
           Power Hack
@@ -17,17 +18,23 @@ const Navbar = () => {
             className="input input-bordered"
           />
         </div>
-        <div className="btn btn-primary">Add New Bill</div>
+
+        <label htmlFor="add-new-bill" className="btn btn-accent">
+          Add New Bill
+        </label>
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+            <div className="w-10 ">
+              <HiOutlineUserCircle size={"2.5rem"} />
             </div>
           </label>
           <ul
             tabIndex={0}
             className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
           >
+            <li>
+              <Link to="/bills">Bill List</Link>
+            </li>
             <li>
               <Link to="/login">Login</Link>
             </li>
