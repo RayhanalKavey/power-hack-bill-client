@@ -17,6 +17,7 @@ const Navbar = () => {
             className="input input-bordered"
           />
         </div>
+        <div className="btn btn-primary">Add New Bill</div>
         <div className="dropdown dropdown-end">
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="w-10 rounded-full">
@@ -28,17 +29,14 @@ const Navbar = () => {
             className="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
           >
             <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
+              <Link to="/login">Login</Link>
             </li>
             <li>
-              <a>Settings</a>
+              <Link to={"/registration"}>Registration</Link>
             </li>
-            <li>
+            {/* <li>
               <a>Logout</a>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
