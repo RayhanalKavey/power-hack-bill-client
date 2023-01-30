@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import AddNewBillModal from "../../COMPONENTS/AddNewBillModal/AddNewBillModal";
 import ConfirmationModal from "../../COMPONENTS/ConfirmationModal/ConfirmationModal";
 import EditBillModal from "../../COMPONENTS/EditBillForm/EditBillModal";
+import Spinner from "../../COMPONENTS/Spinner/Spinner";
 import { useBill } from "../../CONTEXT/BillProvider/BillProvider";
 import useTitle from "../../HOOKS/useTitle/useTitle";
 
@@ -60,35 +61,41 @@ const Bills = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredBills
-            ?.sort((x, y) => y?.currentDate - x?.currentDate)
-            .map((bill) => (
-              <tr key={bill?._id}>
-                <td>{bill?._id}</td>
-                <td>{bill?.name}</td>
-                <td> {bill?.email}</td>
-                <td> {bill?.phone}</td>
-                <td> {bill?.paid}</td>
-                <td>
-                  <label
-                    htmlFor="edit-bill"
-                    className="btn btn-accent btn-xs mr-2"
-                    onClick={() => setClsModal(true)}
-                  >
-                    Edit
-                  </label>
+          {isLoading ? (
+            <tr>
+              <td>Please wait bill data is updating...</td>
+            </tr>
+          ) : (
+            filteredBills
+              ?.sort((x, y) => y?.currentDate - x?.currentDate)
+              .map((bill) => (
+                <tr key={bill?._id}>
+                  <td>{bill?._id}</td>
+                  <td>{bill?.name}</td>
+                  <td> {bill?.email}</td>
+                  <td> {bill?.phone}</td>
+                  <td> {bill?.paid}</td>
+                  <td>
+                    <label
+                      htmlFor="edit-bill"
+                      className="btn btn-accent btn-xs mr-2"
+                      onClick={() => setClsModal(true)}
+                    >
+                      Edit
+                    </label>
 
-                  {clsModal && <EditBillModal bill={bill} />}
-                  <label
-                    className="btn btn-xs btn-error"
-                    htmlFor="confirmation-modal"
-                    onClick={() => setBillModal(bill)}
-                  >
-                    Delete
-                  </label>
-                </td>
-              </tr>
-            ))}
+                    {clsModal && <EditBillModal bill={bill} />}
+                    <label
+                      className="btn btn-xs btn-error"
+                      htmlFor="confirmation-modal"
+                      onClick={() => setBillModal(bill)}
+                    >
+                      Delete
+                    </label>
+                  </td>
+                </tr>
+              ))
+          )}
         </tbody>
         {/* <tfoot>
           <tr>
