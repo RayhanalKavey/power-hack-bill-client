@@ -27,6 +27,7 @@ const EditBillForm = ({ bill }) => {
       method: "PUT",
       headers: {
         "content-type": "application/json",
+        Authorization: localStorage.getItem("power-token"),
       },
       body: JSON.stringify(finalBill),
     })

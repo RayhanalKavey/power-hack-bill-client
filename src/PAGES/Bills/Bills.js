@@ -28,6 +28,10 @@ const Bills = () => {
   const handleDeleteBill = (bill) => {
     fetch(`${process.env.REACT_APP_api_url}/delete-billing/${bill?._id}`, {
       method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+        Authorization: localStorage.getItem("power-token"),
+      },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -63,7 +67,7 @@ const Bills = () => {
         <tbody>
           {isLoading ? (
             <tr>
-              <td>Please wait bill data is updating...</td>
+              <td>Please wait for bill data.</td>
             </tr>
           ) : (
             filteredBills

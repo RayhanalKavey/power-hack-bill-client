@@ -33,6 +33,7 @@ const AddNewBillForm = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        Authorization: localStorage.getItem("power-token"),
       },
       body: JSON.stringify(finalBill),
     })

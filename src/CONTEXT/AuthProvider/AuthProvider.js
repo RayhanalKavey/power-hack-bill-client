@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         // setClsModal(false);
         // refetch();
         // toast.success(`Bill is added successfully.`);
