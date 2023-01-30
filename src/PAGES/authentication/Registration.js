@@ -37,6 +37,8 @@ const Registration = () => {
         if (result.success) {
           navigate(from, { replace: true });
           toast.success(result.message);
+        } else {
+          toast.error(result.error);
         }
       });
   };

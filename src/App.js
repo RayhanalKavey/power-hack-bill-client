@@ -5,15 +5,18 @@ import router from "./ROUTES/Routes/Routes";
 // React query
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Toaster } from "react-hot-toast";
+import AuthProvider from "./CONTEXT/AuthProvider/AuthProvider";
 const queryClient = new QueryClient();
 function App() {
   return (
     <div className="">
       <QueryClientProvider client={queryClient}>
-        <BillProvider>
-          <RouterProvider router={router}></RouterProvider>
-          <Toaster></Toaster>
-        </BillProvider>
+        <AuthProvider>
+          <BillProvider>
+            <RouterProvider router={router}></RouterProvider>
+            <Toaster></Toaster>
+          </BillProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </div>
   );

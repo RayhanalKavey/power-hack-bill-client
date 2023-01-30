@@ -3,13 +3,19 @@ import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import AddNewBillModal from "../../COMPONENTS/AddNewBillModal/AddNewBillModal";
 import ConfirmationModal from "../../COMPONENTS/ConfirmationModal/ConfirmationModal";
+import EditBillModal from "../../COMPONENTS/EditBillForm/EditBillModal";
 import { useBill } from "../../CONTEXT/BillProvider/BillProvider";
 import useTitle from "../../HOOKS/useTitle/useTitle";
 
 const Bills = () => {
   useTitle("Billing List");
-  const { bills, isLoading, refetch, clsModal } = useBill();
 
+  const { bills, isLoading, refetch, clsModal, setClsModal, setQuery, search } =
+    useBill();
+
+  //filtered bills
+  const filteredBills = search(bills);
+  // console.log("filteredBills", filteredBills);
   //Generic modal
   const [billModal, setBillModal] = useState(null);
 
@@ -34,6 +40,14 @@ const Bills = () => {
 
   return (
     <>
+      <div className="form-control max-w-4xl mx-auto m-4">
+        <input
+          type="text"
+          placeholder="Search"
+          className="input input-bordered"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
       <table className="table table-compact  w-[95%] mx-auto mt-10 custom_shadow rounded-lg ">
         <thead className="">
           <tr>
@@ -46,20 +60,25 @@ const Bills = () => {
           </tr>
         </thead>
         <tbody>
-          {bills
+          {filteredBills
             ?.sort((x, y) => y?.currentDate - x?.currentDate)
             .map((bill) => (
               <tr key={bill?._id}>
                 <td>{bill?._id}</td>
-                {/* <td>{bill?.randomId}</td> */}
-
                 <td>{bill?.name}</td>
                 <td> {bill?.email}</td>
                 <td> {bill?.phone}</td>
                 <td> {bill?.paid}</td>
                 <td>
-                  {" "}
-                  <button className="btn btn-xs btn-accent">Edit</button>{" "}
+                  <label
+                    htmlFor="edit-bill"
+                    className="btn btn-accent btn-xs mr-2"
+                    onClick={() => setClsModal(true)}
+                  >
+                    Edit
+                  </label>
+
+                  {clsModal && <EditBillModal bill={bill} />}
                   <label
                     className="btn btn-xs btn-error"
                     htmlFor="confirmation-modal"

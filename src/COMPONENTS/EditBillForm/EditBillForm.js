@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useBill } from "../../CONTEXT/BillProvider/BillProvider";
 
-const AddNewBillForm = () => {
+const EditBillForm = ({ bill }) => {
   const { refetch, setClsModal } = useBill();
 
   // React hook form user form and error
@@ -13,24 +13,18 @@ const AddNewBillForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  // const [signUpError, setSignUpError] = useState("");
-
-  // Redirect user where they want to go
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
 
-  const handleAddBill = (data) => {
+  const handleUpdateBill = (data) => {
+    console.log("bill", bill);
     const { paid, name, email, phone } = data;
     const currentDate = Date.now();
     const randomId = Math.floor(Math.random() * 100000000000);
     const finalBill = { paid, name, email, phone, currentDate, randomId };
-    // setSignUpError("");
-    // console.log(finalBill);
-    // navigate(from, { replace: true });
+
     // /// --2 save product information to the database
-    fetch(`${process.env.REACT_APP_api_url}/add-billing`, {
-      method: "POST",
+    fetch(`${process.env.REACT_APP_api_url}/update-billing/${bill?._id}`, {
+      method: "PUT",
       headers: {
         "content-type": "application/json",
       },
@@ -39,11 +33,12 @@ const AddNewBillForm = () => {
       .then((res) => res.json())
       .then((result) => {
         console.log(result);
-        setClsModal(false);
-        refetch();
-        toast.success(`Bill is added successfully.`);
-        // //Navigate user to the desired path
-        navigate("/bills");
+        if (result?.success) {
+          setClsModal(false);
+          toast.success(result?.message);
+          refetch();
+          navigate("/bills");
+        }
       });
     //-----
   };
@@ -53,7 +48,7 @@ const AddNewBillForm = () => {
         {" "}
         <h1 className="text-3xl my-2 text-center">Add Bill</h1>
         {/* handleSubmit with react hook form */}
-        <form onSubmit={handleSubmit(handleAddBill)}>
+        <form onSubmit={handleSubmit(handleUpdateBill)}>
           <div className="form-control w-full ">
             {/*---------- name ----------*/}
             <label className="label">
@@ -64,6 +59,7 @@ const AddNewBillForm = () => {
               {...register("name", { required: "Name is required !" })}
               className="input input-bordered w-full "
               placeholder="Full name"
+              defaultValue={bill?.name}
             />
             {/* erroR message */}
             {errors.name && (
@@ -79,6 +75,7 @@ const AddNewBillForm = () => {
               {...register("email", { required: "Email address is required!" })}
               className="input input-bordered w-full "
               placeholder="Email"
+              defaultValue={bill?.email}
             />
             {/* Show email erroRs */}
             {errors.email && (
@@ -105,6 +102,7 @@ const AddNewBillForm = () => {
               })}
               className="input input-bordered w-full "
               placeholder="Phone No."
+              defaultValue={bill?.phone}
             />
             {/* Show Phone number erroRs */}
             {errors.phone && (
@@ -121,6 +119,7 @@ const AddNewBillForm = () => {
               })}
               className="input input-bordered w-full "
               placeholder="Paid amount"
+              defaultValue={bill?.paid}
             />
             {/* Show Paid amount erroRs */}
             {errors.paid && (
@@ -133,15 +132,10 @@ const AddNewBillForm = () => {
             type="submit"
             value="Submit"
           />
-          {/* {signUpError && (
-            <label className="label">
-              <span className="label-text-alt text-error">{signUpError}</span>
-            </label>
-          )} */}
         </form>
       </div>
     </>
   );
 };
 
-export default AddNewBillForm;
+export default EditBillForm;

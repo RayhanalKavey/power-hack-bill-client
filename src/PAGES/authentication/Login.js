@@ -34,10 +34,14 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
+        console.log(result.token);
         if (result.success) {
           navigate(from, { replace: true });
           toast.success(result.message);
+          localStorage.setItem("power-token", result.token);
+        } else {
+          toast.error(result.error);
+          console.log(result.error);
         }
       });
   };

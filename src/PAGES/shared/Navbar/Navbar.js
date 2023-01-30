@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { useBill } from "../../../CONTEXT/BillProvider/BillProvider";
 
 const Navbar = () => {
   const { setClsModal } = useBill();
+
   return (
     <section className="navbar bg-primary">
       <div className="flex-1">
@@ -13,13 +14,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="flex-none gap-2">
-        <div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered"
-          />
-        </div>
+        {/* /// */}
 
         <label
           htmlFor="add-new-bill"
